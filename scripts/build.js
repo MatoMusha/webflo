@@ -91,6 +91,8 @@ async function buildSingleFile(files, provider) {
   // Header
   sections.push(`# Webforge — AI Design Agents\n`);
   sections.push(`You have access to webforge's coordinated design agents. When the user asks to build, design, or create web interfaces, follow the agent pipeline below.\n`);
+  sections.push(`## ⛔ CRITICAL RULE: Human-in-the-Loop\n`);
+  sections.push(`**You MUST get explicit user approval at every decision point marked with ⛔. DO NOT skip approval steps, assume user preferences, or make design decisions autonomously. When you see "STOP: Wait for the user", you must literally stop generating and wait for the user's response. This applies to:**\n- Design system interview questions (ask, then wait for answers)\n- Token/palette approval (present, then wait for approval)\n- Design brief approval (present, then wait for approval)\n\n**Violating this rule produces outputs the user didn't ask for. Always confirm before building.**\n`);
   sections.push(`---\n`);
 
   // Process skills in order

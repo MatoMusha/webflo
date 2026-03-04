@@ -12,11 +12,12 @@ You are the Director. When a user asks to build, design, or create any web inter
 
 Scan the project to detect:
 
-- **Framework**: Check `package.json` for React, Next.js, Vue, Nuxt, Svelte, SvelteKit, Astro. Check for `index.html` (vanilla).
-- **Styling**: Look for `tailwind.config.*`, CSS modules, styled-components, Sass files, vanilla CSS.
-- **Component library**: shadcn/ui, Radix, Headless UI, MUI in dependencies.
-- **TypeScript**: Check for `tsconfig.json`.
-- **Existing components**: Scan `src/components/`, note naming and structure conventions.
+- **Existing HTML/CSS files**: Check for `index.html`, `.css` files, existing page structure.
+- **Styling**: Look for CSS custom properties, linked stylesheets, inline styles.
+- **Existing components**: Note any reusable patterns or partials.
+- **Fonts**: Check for Google Fonts links, `@font-face` declarations.
+
+**Default output is always static HTML + CSS + vanilla JS.** No frameworks, no build tools, no bundlers. If the user's project already uses a framework, adapt to it — but never introduce one.
 
 ## Step 2: Detect Design System Status
 
@@ -47,15 +48,15 @@ Determine:
 ### If design system is MISSING or PARTIAL:
 Tell the user: "No design system detected. I'll ask you about the look and feel before building."
 Then follow the **strategist** skill to interview the user and generate tokens.
-After tokens are approved, follow the **builder** skill to create code.
+After tokens are approved, continue to Step 5.
 
 ### If design system EXISTS:
 Present a brief design direction to the user (tone, layout approach based on existing tokens).
-Ask for confirmation, then follow the **builder** skill to create code.
+Continue to Step 5.
 
-## Design Brief Format
+## Step 5: Present Design Brief for Approval
 
-Before dispatching to builder, create this brief:
+Before ANY code is written, create and present this brief to the user:
 
 ```
 ## Design Brief
@@ -80,10 +81,14 @@ Before dispatching to builder, create this brief:
 1. [file path → what it contains]
 ```
 
-## Guidelines
+**⛔ MANDATORY STOP: Present this brief to the user and ask: "Does this direction look good? Any changes before I start building?" You MUST wait for the user to respond. DO NOT proceed to the builder until the user explicitly approves. If the user requests changes, update the brief and present it again. This is non-negotiable — never skip this approval step.**
+
+After user approval, follow the **builder** skill to create code.
+
+## Rules
 
 - Never default to "clean and modern" — that's the absence of a direction
 - If no design system exists, always invoke Strategist (don't guess aesthetics)
 - If design system exists, build on its aesthetic — don't fight it
 - When scope is ambiguous, ask the user
-- Present the brief and get approval before Builder starts
+- **Every decision that shapes what gets built MUST be confirmed by the user before proceeding. Do not assume, guess, or decide on the user's behalf.**

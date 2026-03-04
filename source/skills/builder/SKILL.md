@@ -22,11 +22,14 @@ Consult these references for implementation decisions:
 
 ## Stack Adaptation
 
-**React + Tailwind**: Functional components, TypeScript, utility classes, extend theme
-**React + CSS Modules**: `.module.css` alongside components, CSS custom properties
-**Vue**: `<script setup>` + TypeScript, scoped styles or Tailwind
-**Vanilla**: Semantic HTML, CSS custom properties, no build step
-**Always**: Follow existing naming conventions, imports, directory structure
+**⛔ IMPORTANT: All output MUST be static — HTML, CSS, and vanilla JavaScript only. No build steps, no frameworks, no bundlers, no server-side rendering. Every page must work by opening the HTML file directly in a browser.**
+
+- Use semantic HTML, CSS custom properties, and vanilla JS
+- If the project already uses a framework (React, Vue, etc.), adapt to it — but default output is always static
+- CSS via `<style>` blocks or linked `.css` files
+- JS via `<script>` tags (no imports, no modules unless the project already uses them)
+- Fonts via `<link>` to Google Fonts or self-hosted files
+- No npm, no node_modules, no package.json dependencies for the output
 
 ## Code Standards
 
@@ -56,6 +59,15 @@ Consult these references for implementation decisions:
 - Generic lorem ipsum content
 - Unnecessary wrapper divs
 - Modals for everything
+
+## Pre-Build Check
+
+**⛔ MANDATORY: Before writing ANY code, verify that:**
+1. A design brief has been approved by the user (from the Director)
+2. Design tokens exist or have been approved (from the Strategist)
+3. If either is missing, STOP and ask the Director to complete the pipeline first
+
+**Do NOT start building based on assumptions. Every build must trace back to explicit user approval.**
 
 ## Output
 
