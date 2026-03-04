@@ -8,20 +8,36 @@ Works with **Claude Code**, **Cursor**, **Windsurf**, **Codex**, and any AI codi
 
 Instead of manually piecing together color palettes, type scales, spacing systems, and components, webforge coordinates specialized agents that handle the full pipeline:
 
-1. **Director** scans your project — detects framework, existing tokens, components, and conventions
+1. **Director** scans your project — detects existing styles, tokens, and conventions
 2. **Strategist** interviews you about aesthetic preferences — mood, colors, typography, theme — then generates a complete OKLCH token system
-3. **Builder** creates production-grade components and pages using your tokens, adapted to your stack
+3. **Builder** creates static, production-grade pages using your tokens — HTML, CSS, and vanilla JS that work by opening in a browser
 
 ```
 You: "build me a landing page for a coffee brand"
 
-Director: Scanning project... React + Tailwind detected. No design system found.
+Director: Scanning project... No design system found.
 Strategist: What mood are you going for?
 You: warm, organic, earthy
 Strategist: Generated palette: terracotta + warm cream + sage. Approve?
 You: yes
-Builder: Creating hero, menu section, location card... Done. 4 files created.
+Builder: Creating hero, menu section, location card... Done. 4 static files created.
 ```
+
+## Human-in-the-Loop
+
+Webforge never makes design decisions for you. Every agent has mandatory approval checkpoints:
+
+- **Strategist** asks questions in small groups and waits for your answers — it won't assume your preferences
+- **Strategist** presents the generated token system and waits for your explicit approval before creating files
+- **Director** presents the design brief and waits for your "go ahead" before the Builder starts
+
+No code is written until you've approved the direction. If you want changes, just say so — the agents will adjust and re-present.
+
+## Static Output
+
+All generated code is **static by default** — HTML, CSS, and vanilla JavaScript. No frameworks, no build steps, no npm dependencies. Every page works by opening the HTML file directly in a browser.
+
+If your project already uses a framework (React, Vue, etc.), the agents will adapt to it. But the default is always zero-dependency static output.
 
 ## Installation
 
@@ -132,7 +148,7 @@ After you answer, the Strategist generates a complete token system (OKLCH color 
 "Add a pricing section to the marketing page"
 ```
 
-The Director detects your existing tokens (Tailwind config, CSS custom properties, etc.) and skips the Strategist interview. It creates a design brief based on your existing system and passes it to the Builder.
+The Director detects your existing tokens (CSS custom properties, stylesheets) and skips the Strategist interview. It creates a design brief based on your existing system, presents it for your approval, then passes it to the Builder.
 
 ### What the agents generate
 
@@ -143,19 +159,18 @@ The Director detects your existing tokens (Tailwind config, CSS custom propertie
 | **Spacing** | 4pt grid system with semantic token names |
 | **Motion** | Duration tiers, exponential easing curves, reduced motion support |
 | **Components** | Semantic HTML, all 8 interaction states, keyboard navigation, WCAG AA |
-| **Stack adaptation** | Tailwind config, CSS custom properties, or both |
+| **Output** | Static HTML + CSS + vanilla JS — no frameworks, no build steps |
 
 ## Agents
 
 ### Director
 
 The orchestrator. Scans your project to detect:
-- Framework (React, Next.js, Vue, Svelte, Astro, vanilla)
-- Styling approach (Tailwind, CSS modules, styled-components, vanilla CSS)
-- Existing design system (tokens, palette, fonts)
-- Component library and conventions
+- Existing HTML/CSS files and page structure
+- Design system status (tokens, palette, fonts)
+- Styling approach (CSS custom properties, linked stylesheets)
 
-Then routes the pipeline: Strategist (if no design system) → Builder.
+Then routes the pipeline: Strategist (if no design system) → presents design brief for your approval → Builder.
 
 ### Strategist
 
@@ -166,17 +181,17 @@ The design system architect. Interviews you about look and feel, then generates:
 - Motion tokens (durations, easing curves)
 - Border radius (mapped to mood)
 
-Outputs as Tailwind theme extension or CSS custom properties, depending on your stack.
+Outputs as CSS custom properties. Waits for your approval before generating any files.
 
 ### Builder
 
-The code creator. Takes the design brief and tokens, then builds:
-- Production-grade components with semantic HTML
-- All interactive states (hover, focus-visible, active, disabled, loading, error, success)
-- Responsive layouts (mobile-first, container queries)
+The code creator. Takes the approved design brief and tokens, then builds:
+- Static HTML, CSS, and vanilla JS — no build steps, works in any browser
+- Semantic HTML with all interactive states (hover, focus-visible, active, disabled)
+- Responsive layouts (mobile-first)
 - Accessibility (WCAG AA contrast, keyboard navigation, screen reader support)
 - Motion with `prefers-reduced-motion` support
-- Adapted to your project's framework and conventions
+- Will not start until the design brief has been approved by you
 
 ### Design System (Knowledge Library)
 
