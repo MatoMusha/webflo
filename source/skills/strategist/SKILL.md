@@ -78,9 +78,16 @@ Scale (fluid for headings):
 | 2xl | clamp(2rem, 1rem + 3vw, 3.5rem) | Hero text |
 
 Rules:
-- Avoid: Inter, Roboto, Open Sans, Lato, Montserrat
-- Good alternatives: Instrument Sans, Plus Jakarta Sans, Outfit, Onest, Figtree, DM Sans, Fraunces, Newsreader
-- One font is often enough — only add a second for genuine contrast
+- Avoid as defaults: Inter, Roboto, Open Sans, Lato, Montserrat (respect them if already in the project)
+- **Pick a different font for every project** — never repeat the same font across builds. Match the font to the mood:
+  - Geometric/modern: Outfit, Onest, Figtree, Urbanist, Sora, Manrope, General Sans
+  - Humanist/friendly: Plus Jakarta Sans, DM Sans, Nunito, Quicksand, Comfortaa
+  - Technical/sharp: Space Grotesk, JetBrains Mono, IBM Plex Sans, Fira Code, Azeret Mono
+  - Editorial/premium: Fraunces, Newsreader, Lora, Playfair Display, Cormorant, Libre Baskerville
+  - Playful/expressive: Fredoka, Baloo 2, Rubik, Lexend, Poppins
+  - Brutalist/display: Bebas Neue, Anton, Oswald, Archivo Black, Space Mono
+  - Elegant/luxurious: Cormorant Garamond, Cinzel, Spectral, EB Garamond
+- One font is often enough — only add a second for genuine contrast (e.g., serif display + sans body)
 - Include line-heights per size
 
 ### Spacing

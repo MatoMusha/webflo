@@ -15,28 +15,51 @@ Prefer composable components with children/slots over prop-heavy monoliths:
 <Card title="Title" body="Content" headerClass="..." />
 ```
 
-## Common Component Structures
+## Page Layout — Vary by Context
 
-### Page Layout
-```
-<Layout>
-  <Header />         — nav, logo, actions
-  <main>
-    <Hero />          — primary message + CTA
-    <Section />       — content blocks with varied layouts
-    <Section />
-    <CTA />           — conversion section
-  </main>
-  <Footer />          — links, legal, secondary nav
-</Layout>
-```
+**CRITICAL: Every project should have a unique layout structure.** Do not reuse the same hero → features → CTA template. The layout should be driven by the content type and purpose.
+
+### Layout Templates by Purpose
+
+**Marketing / Landing page:**
+- Split hero (text left, visual right) → social proof strip → feature deep-dives (alternating) → pricing → CTA
+- Full-bleed hero with scroll-reveal → editorial content blocks → testimonial → footer CTA
+- Video/animation hero → problem/solution narrative sections → demo → signup
+
+**Portfolio / Creative:**
+- Full-screen project grid (masonry or bento) → project detail pages with large images
+- Horizontal scroll showcase → about section → contact
+- Single-column editorial with large typography and inline media
+
+**Documentation / Tool:**
+- Sidebar navigation + content area with table of contents
+- Tabbed interface with code examples and previews
+- Dashboard-style grid with feature cards of varying sizes
+
+**E-commerce / Product:**
+- Product grid with filters → product detail (gallery + info split) → related items
+- Single-product hero with sticky add-to-cart → feature sections → reviews
+
+**Blog / Editorial:**
+- Wide header with featured post → grid of recent posts → categories sidebar
+- Magazine-style layout with mixed column widths and pull quotes
+
+**Restaurant / Local business:**
+- Full-bleed hero image → split sections (menu, hours, location) → gallery → reservations
+- Parallax sections with large food photography → menu grid → contact
 
 ### Section Patterns
 - **Split**: text + media side by side, alternating direction
-- **Feature grid**: auto-fit grid, vary card sizes for hierarchy
+- **Bento grid**: mixed-size tiles for visual interest (not uniform cards)
+- **Feature deep-dive**: large visual + detailed text, one feature per section
 - **Testimonial**: single quote with attribution, or carousel
 - **Stats**: key numbers with context (not the hero metric template)
 - **FAQ**: `<details>/<summary>` accordion
+- **Timeline**: vertical or horizontal progression
+- **Comparison**: side-by-side columns or table
+- **Gallery**: masonry, grid, or lightbox
+
+**Never use the same layout twice across different projects. Combine and remix these patterns to create something unique each time.**
 
 ### Navigation
 - Mobile: hamburger → slide drawer or full-screen overlay
