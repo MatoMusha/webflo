@@ -20,7 +20,7 @@ Strategist: What mood are you going for?
 You: warm, organic, earthy
 Strategist: Generated palette: terracotta + warm cream + sage. Approve?
 You: yes
-Builder: Creating hero, menu section, location card... Done. 4 static files created.
+Builder: Creating Vite project with hero, menu section, location card... Dev server running at localhost:5173.
 ```
 
 ## Human-in-the-Loop
@@ -33,33 +33,37 @@ Webforge never makes design decisions for you. Every agent has mandatory approva
 
 No code is written until you've approved the direction. If you want changes, just say so — the agents will adjust and re-present.
 
-## Static Output
+## Vite Dev Server Output
 
-All generated code is **static by default** — HTML, CSS, and vanilla JavaScript. No frameworks, no build steps, no npm dependencies. Every page works by opening the HTML file directly in a browser.
+All generated code is **vanilla HTML, CSS, and JavaScript** served through a **Vite dev server** — you get hot reload and a proper development experience with zero runtime dependencies. Vite is the only dev dependency.
 
-If your project already uses a framework (React, Vue, etc.), the agents will adapt to it. But the default is always zero-dependency static output.
+The Builder supports **single-page and multi-page sites**. Multi-page sites get shared navigation via a JS module, per-page `<title>` tags, and a Vite multi-page build config.
+
+If your project already uses a framework (React, Vue, etc.), the agents will adapt to it. But the default is always vanilla code with Vite as the dev server.
 
 ## Installation
 
 ### Claude Code
 
-**Option 1: Clone and use directly**
+**Option 1: Install as a plugin (recommended)**
+
+```bash
+claude /plugin install MatoMusha/webforge
+```
+
+That's it. The plugin provides all four agents to any project you open in Claude Code.
+
+To test a local copy during development:
 
 ```bash
 git clone https://github.com/MatoMusha/webforge.git
-cd webforge
-node scripts/build.js
+claude --plugin-dir ~/webforge
 ```
-
-The build outputs skills to `.claude/skills/` which Claude Code auto-discovers when you work in the project directory. Just start Claude Code in the webforge directory and prompt naturally.
 
 **Option 2: Copy skills into your project**
 
 ```bash
-# Clone webforge
 git clone https://github.com/MatoMusha/webforge.git
-
-# Build
 cd webforge && node scripts/build.js
 
 # Copy the built skills into your project
@@ -67,16 +71,6 @@ cp -r .claude/skills/ /path/to/your-project/.claude/skills/
 ```
 
 Now start Claude Code in your project directory. The agents will auto-trigger when you ask to build something.
-
-**Option 3: Use pre-built distribution files**
-
-```bash
-git clone https://github.com/MatoMusha/webforge.git
-cd webforge && node scripts/build.js
-
-# Copy the distribution output
-cp -r dist/claude-code/skills/ /path/to/your-project/.claude/skills/
-```
 
 ### Cursor
 
@@ -138,9 +132,18 @@ The Director detects no design system exists and triggers the Strategist, which 
 2. **Mood** — Pick 3 words (bold, playful, refined, minimal, warm, etc.)
 3. **Colors** — Brand colors or generate a palette? Warm, cool, monochrome?
 4. **Typography** — Serif, sans-serif, mono, or mixed?
-5. **Theme** — Light, dark, or both?
+5. **Layout style** — Clean/balanced or bold/experimental? (affects grids, typography contrast, spacing, scroll effects)
+6. **Theme** — Light, dark, or both?
 
-After you answer, the Strategist generates a complete token system (OKLCH color palette, type scale, spacing, motion, border radius) and asks you to approve. Then the Builder creates your components.
+After you answer, the Strategist generates a complete token system (OKLCH color palette, type scale, spacing, motion, layout style, border radius) and asks you to approve. Then the Builder creates your pages and launches the Vite dev server.
+
+### Build a multi-page site
+
+```
+"Build me a portfolio site with home, work, about, and contact pages"
+```
+
+The Director detects distinct pages and sets up a multi-page structure — shared navigation injected via a JS module, `aria-current="page"` active states, per-page `<title>` and meta, Vite multi-page build config. Each page gets its own directory (`work/index.html`, `about/index.html`, etc.).
 
 ### Build with existing design system
 
@@ -158,8 +161,9 @@ The Director detects your existing tokens (CSS custom properties, stylesheets) a
 | **Typography** | Distinctive fonts, fluid type scale with `clamp()`, proper line-heights |
 | **Spacing** | 4pt grid system with semantic token names |
 | **Motion** | Duration tiers, exponential easing curves, reduced motion support |
+| **Layout style** | Clean/safe or bold/experimental — affects grids, typography, scroll effects |
 | **Components** | Semantic HTML, all 8 interaction states, keyboard navigation, WCAG AA |
-| **Output** | Static HTML + CSS + vanilla JS — no frameworks, no build steps |
+| **Output** | Vite dev server project — vanilla HTML + CSS + JS with hot reload |
 
 ## Agents
 
@@ -186,10 +190,12 @@ Outputs as CSS custom properties. Waits for your approval before generating any 
 ### Builder
 
 The code creator. Takes the approved design brief and tokens, then builds:
-- Static HTML, CSS, and vanilla JS — no build steps, works in any browser
+- Vite dev server project — vanilla HTML, CSS, and JS with hot reload
+- Single-page or multi-page sites (shared nav, per-page meta, Vite multi-page config)
+- Layout style implementation — clean/safe (symmetric, consistent) or bold/experimental (asymmetric grids, oversized type, scroll effects, clip-path)
 - Semantic HTML with all interactive states (hover, focus-visible, active, disabled)
 - Responsive layouts (mobile-first)
-- Accessibility (WCAG AA contrast, keyboard navigation, screen reader support)
+- Accessibility (WCAG AA contrast, keyboard navigation, screen reader support, `aria-current="page"`)
 - Motion with `prefers-reduced-motion` support
 - Will not start until the design brief has been approved by you
 
@@ -246,7 +252,8 @@ webforge/
 │           ├── responsive.md
 │           └── writing.md
 ├── .claude-plugin/              # Claude Code plugin manifest
-├── .claude/skills/              # Built output (Claude Code)
+├── skills/                      # Built output (plugin distribution)
+├── .claude/skills/              # Built output (local Claude Code use)
 ├── dist/                        # Built output (all providers)
 ├── scripts/
 │   ├── build.js                 # Multi-provider build system
@@ -284,6 +291,7 @@ Building providers:
   Generic        → dist/generic/webforge-instructions.md
 
   + .claude/skills/ (local Claude Code use)
+  + skills/ (plugin distribution)
 ```
 
 To rebuild after editing source files:
