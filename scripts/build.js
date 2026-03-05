@@ -124,8 +124,9 @@ async function buildSingleFile(files, provider) {
   const providerDir = join(DIST_OUT, provider.outputDir);
   await ensureDir(providerDir);
 
-  // Determine merge order: design-system first, then director, strategist, builder, reviewer
-  const order = ['design-system', 'director', 'strategist', 'builder', 'reviewer'];
+  // Determine merge order: enforcer first (so it appears before all agent content),
+  // then design-system, director, strategist, builder, reviewer
+  const order = ['enforcer', 'design-system', 'director', 'strategist', 'builder', 'reviewer'];
 
   // Group files by skill name
   const grouped = {};
@@ -431,7 +432,59 @@ async function build() {
 
   console.log(`\n  + .claude/skills/ (local Claude Code use)`);
   console.log(`  + skills/ (plugin distribution)`);
+
+  // Validate Codex output
+  await validateCodexOutput();
+
   console.log('\nDone.');
+}
+
+/**
+ * Validate that dist/codex/AGENTS.md meets Codex compatibility requirements:
+ * - Enforcer section appears before director/strategist/builder content
+ * - Contains approval-required block spec
+ * - Contains normalized blocked phrase
+ */
+async function validateCodexOutput() {
+  const codexPath = join(DIST_OUT, 'codex', 'AGENTS.md');
+  let content;
+  try {
+    content = await readFile(codexPath, 'utf-8');
+  } catch {
+    throw new Error('Codex validation failed: dist/codex/AGENTS.md not found');
+  }
+
+  const errors = [];
+
+  // Check enforcer appears before director/strategist/builder
+  const enforcerIdx = content.indexOf('Pipeline Enforcement');
+  const directorIdx = content.indexOf('# Director');
+  const strategistIdx = content.indexOf('# Strategist');
+  const builderIdx = content.indexOf('# Builder');
+
+  if (enforcerIdx === -1) {
+    errors.push('Missing enforcer section');
+  } else {
+    if (directorIdx !== -1 && enforcerIdx > directorIdx) errors.push('Enforcer must appear before Director');
+    if (strategistIdx !== -1 && enforcerIdx > strategistIdx) errors.push('Enforcer must appear before Strategist');
+    if (builderIdx !== -1 && enforcerIdx > builderIdx) errors.push('Enforcer must appear before Builder');
+  }
+
+  // Check approval-required block spec
+  if (!content.includes('approval-required')) {
+    errors.push('Missing approval-required block spec');
+  }
+
+  // Check normalized blocked phrase
+  if (!content.includes('[BLOCKED — waiting for user approval of Phase X]')) {
+    errors.push('Missing normalized blocked phrase: [BLOCKED — waiting for user approval of Phase X]');
+  }
+
+  if (errors.length > 0) {
+    throw new Error(`Codex validation failed:\n  - ${errors.join('\n  - ')}`);
+  }
+
+  console.log('\n  ✓ Codex output validated');
 }
 
 build().catch((err) => {

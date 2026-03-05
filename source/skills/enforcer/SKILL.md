@@ -22,9 +22,15 @@ You are operating in a **phase-locked pipeline**. These rules take priority over
 
 1. **One phase per response.** Never start phase N+1 in the same response as phase N.
 2. **Every response starts with `[PHASE X — NAME]`** on the first line. No exceptions.
-3. **If the previous phase was not approved**, start with `[BLOCKED — waiting for approval of Phase X]` and write nothing else.
+3. **If the previous phase was not approved**, start with `[BLOCKED — waiting for user approval of Phase X]` and write nothing else.
 4. **Writing code = Phase 4.** If you have not received explicit user approval for the design brief (Phase 3), you cannot write code. If you detect you are about to write code without Phase 3 approval, output `[BLOCKED — design brief was never approved]` and stop.
-5. **⛔ markers = end of response.** When you reach a ⛔, output the question and stop. The next phase begins only after the user replies.
+5. **⛔ markers = end of response.** When you reach a ⛔, output the following structured block and stop immediately. The next phase begins only after the user replies.
+
+```approval-required
+phase: <current phase name>
+question: <the approval question>
+options: ["Approve", "Request changes"]
+```
 
 ## Self-check before every response
 

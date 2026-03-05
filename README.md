@@ -156,6 +156,14 @@ cd sitechain && node scripts/build.js
 cp dist/codex/AGENTS.md /path/to/your-project/AGENTS.md
 ```
 
+Run Codex from the project root (where `AGENTS.md` lives).
+
+**Smoke test** — verify the pipeline enforcer works:
+
+> "Build me a landing page for a coffee brand"
+
+Expected output should start with `[PHASE 1 — STRATEGIST INTERVIEW]` and end with an `approval-required` block. If it skips straight to code, the enforcer isn't loaded.
+
 </details>
 
 <details>
