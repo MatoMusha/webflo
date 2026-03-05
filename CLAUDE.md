@@ -34,7 +34,10 @@ Director (auto-triggered)
       Builder
         Creates production code using tokens, adapts to stack
         ▼
-      Files created
+      Reviewer
+        Checks simplicity, cleanliness, security — fixes issues
+        ▼
+      Dev server launched
 ```
 
 ## Project Structure
@@ -50,7 +53,7 @@ webflo/
 ├── .claude/skills/              # Built: Claude Code output
 ├── dist/                        # Built: all providers
 │   ├── claude-code/skills/      #   Claude Code (skill dirs)
-│   ├── cursor/.cursorrules      #   Cursor (single file)
+│   ├── cursor/.cursor/rules/    #   Cursor (.mdc rule files)
 │   ├── windsurf/.windsurfrules  #   Windsurf (single file)
 │   ├── gemini-cli/GEMINI.md     #   Gemini CLI (single file)
 │   ├── codex/AGENTS.md          #   Codex (single file)

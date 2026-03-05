@@ -4,6 +4,6 @@
   "tagline": "Agentic website creation with coordinated design + build agents",
   "category": "design",
   "tags": ["web-design", "frontend", "agents", "design-system"],
-  "repository": "https://github.com/matiasmusha/webflo",
+  "repository": "https://github.com/MatoMusha/webflo",
   "minClaudeCodeVersion": "1.0.0"
 }
